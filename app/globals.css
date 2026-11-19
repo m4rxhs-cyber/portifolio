@@ -1,0 +1,2 @@
+@tailwind base;@tailwind components;@tailwind utilities;
+:root{color-scheme:dark}html{scroll-behavior:smooth}body{background:#0d1114;color:#e9eeee;font-family:Arial,Helvetica,sans-serif}::selection{background:#e36b50;color:#0d1114}.technical{font-family:Consolas,monospace;letter-spacing:.12em;text-transform:uppercase}.grid-bg{background-image:linear-gradient(#ffffff07 1px,transparent 1px),linear-gradient(90deg,#ffffff07 1px,transparent 1px);background-size:52px 52px}.rule{border-color:#2a3237}.hoverline{transition:color .2s}.hoverline:hover{color:#e36b50}
