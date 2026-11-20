@@ -33,4 +33,30 @@ Com o servidor local em execução, rode `npm run test:e2e` em outro terminal. P
 
 ## Dados profissionais e simulação
 
-Os indicadores da faixa e os estudos de caso profissionais se baseiam no currículo. Os números e o histórico no notebook são dados demonstrativos. O Test Lab interativo e a integração do painel com o GitHub Actions ficam para uma fase futura.
+Os indicadores da faixa e os estudos de caso profissionais se baseiam no currículo. Os números e o histórico no notebook são dados demonstrativos. O Test Lab usa a Restful Booker em um painel separado.
+
+## Test Lab
+
+Na página inicial em `/pt` ou `/en`, use o botão **Explorar Test Lab** para rolar até o laboratório e executar testes na mesma página. Os endereços diretos `/pt/test-lab` e `/en/test-lab` continuam disponíveis.
+
+- **Autenticação** — login e logout demonstrativos e cinco cenários automatizados. Use as credenciais fictícias exibidas na tela.
+- **API** — dez cenários que fazem requisições reais à [Restful Booker](https://restful-booker.herokuapp.com/apidoc/index.html). O inspector mostra requisições, respostas permitidas, duração e asserções Zod.
+- **Investigação de defeitos** — três demonstrações isoladas de regras de negócio, com entrada de controle, evidência e relatório.
+- **Histórico** — até 20 execuções na sessão da guia, inclusive ao alternar o idioma. Senhas e tokens ficam fora dos resultados.
+
+O Route Handler `POST /api/test-lab` aceita apenas o ID de um cenário fixo. As rotas externas são `GET /ping`, `POST /auth`, `GET/POST /booking` e `GET/PUT/PATCH/DELETE /booking/{id}`. Os pedidos têm timeout e limites de tamanho. O servidor limita execuções por instância e serializa escrita na instância. Deploys com várias réplicas precisam de limitação compartilhada para um limite global.
+
+Para habilitar cenários de escrita, copie `.env.example` para `.env.local` e configure `BOOKER_USERNAME` e `BOOKER_PASSWORD` com as credenciais de demonstração válidas da Restful Booker. Reinicie o servidor. Reservas têm marcadores exclusivos e as operações consultam a propriedade no servidor antes de escrever. O ambiente público pode reiniciar ou alterar dados durante um teste e a limpeza depende de disponibilidade e autenticação do serviço.
+
+Com o servidor em execução:
+
+```bash
+npm run typecheck
+npm run lint
+npm run test:e2e
+npm run test:runner
+npm run test:booker
+npm run test:booker -- --write
+```
+
+Cypress usa respostas controladas para testar a interface. O comando `test:booker` separa os testes HTTP reais. Use `LAB_BASE_URL` ou `-- --config baseUrl=...` no Cypress para indicar outra porta. A opção `--write` cria dados fictícios no ambiente público e tenta removê-los. O comando retorna falha se qualquer execução registrar divergência ou erro técnico.

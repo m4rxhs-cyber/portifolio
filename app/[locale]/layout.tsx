@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation';
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   return {
-    title: 'Neemias Sales | Engineering Dark',
+    title: 'Neemias Sales | QA',
     description: locale === 'en'
       ? 'Neemias Sales, QA Engineer. Web, mobile and REST API testing, test automation and CI/CD.'
       : 'Neemias Sales, Analista de Qualidade de Software. Testes Web, Mobile e APIs REST, automação e CI/CD.',
@@ -16,5 +16,10 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 export default async function LocaleLayout({ children, params }: { children: React.ReactNode; params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   if (locale !== 'pt' && locale !== 'en') notFound();
-  return <html lang={locale === 'pt' ? 'pt-BR' : 'en'}><body>{children}</body></html>;
+  return (
+    <html lang={locale === 'pt' ? 'pt-BR' : 'en'}>
+      <head><meta name="darkreader-lock" /></head>
+      <body>{children}</body>
+    </html>
+  );
 }

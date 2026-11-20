@@ -3,3 +3,5 @@ node_modules
 *.tsbuildinfo
 /cypress/screenshots/
 /cypress/videos/
+/.env*
+!/.env.example

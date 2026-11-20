@@ -5,6 +5,7 @@ import {
 } from 'lucide-react';
 import { Header } from '@/components/Header';
 import { TestExecutionDashboard } from '@/components/TestExecutionDashboard';
+import { TestLab } from '@/components/test-lab/TestLab';
 import { content } from '@/lib/content';
 import { featuredProjects, github, home, linkedin, resume } from '@/lib/home';
 
@@ -102,7 +103,7 @@ export default async function Portfolio({ params }: { params: Promise<{ locale: 
           </div>
         </section>
         <section id="lab" className="shell supporting">
-          <h2>{profile.labTitle}</h2><p>{profile.labText}</p>
+          <TestLab locale={locale} embedded />
         </section>
         <section id="stack" className="shell supporting">
           <h2>{profile.stackTitle}</h2>
