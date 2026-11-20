@@ -4,6 +4,8 @@ import {
   Infinity as InfinityIcon, Linkedin, Mail, Play, Timer, Users, CheckCheck,
 } from 'lucide-react';
 import { Header } from '@/components/Header';
+import { NetworkConnections } from '@/components/NetworkConnections';
+import { QAWorkflow } from '@/components/QAWorkflow';
 import { TestExecutionDashboard } from '@/components/TestExecutionDashboard';
 import { TestLab } from '@/components/test-lab/TestLab';
 import { content } from '@/lib/content';
@@ -65,9 +67,12 @@ export default async function Portfolio({ params }: { params: Promise<{ locale: 
           </ul>
         </div>
         <section id="projects" className="shell featured">
-          <div className="featured-heading">
-            <div><p className="section-label">{t.featured}</p><h2>{t.cases}</h2></div>
-            <a href={`${github}?tab=repositories`} target="_blank" rel="noopener noreferrer">{t.all}<ArrowRight size={16} /></a>
+          <div className="qa-project-intro">
+            <NetworkConnections segment="metrics" />
+            <div className="featured-heading">
+              <div><p className="section-label">{t.featured}</p><h2>{t.cases}</h2></div>
+              <a href={`${github}?tab=repositories`} target="_blank" rel="noopener noreferrer">{t.all}<ArrowRight size={16} /></a>
+            </div>
           </div>
           <div className="project-grid">
             {featuredProjects.map((project, i) => (
@@ -90,6 +95,8 @@ export default async function Portfolio({ params }: { params: Promise<{ locale: 
               </article>
             ))}
           </div>
+          <NetworkConnections segment="workflow" />
+          <QAWorkflow locale={locale} />
         </section>
         <section id="about" className="shell supporting">
           <h2>{t.about}</h2><p className="profile-role">{profile.role}</p><p>{profile.intro}</p>
