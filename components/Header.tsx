@@ -1,0 +1,88 @@
+'use client';
+
+import { useEffect, useRef, useState } from 'react';
+import { ArrowUpRight, FlaskConical, Github, Linkedin } from 'lucide-react';
+import type { Locale } from '@/lib/content';
+import { github, home, linkedin, resume, sectionIds } from '@/lib/home';
+
+export function Header({ locale }: { locale: Locale }) {
+  const t = home[locale];
+  const [active, setActive] = useState<string>('home');
+  const menu = useRef<HTMLDetailsElement>(null);
+
+  useEffect(() => {
+    const sections = sectionIds.map((id) => document.getElementById(id));
+    function updateActive() {
+      const root = document.documentElement;
+      const maxScroll = Math.max(0, root.scrollHeight - root.clientHeight);
+      const scrollPadding = parseFloat(getComputedStyle(root).scrollPaddingTop) || 0;
+      const anchor = sections.find((section) => section && '#' + section.id === window.location.hash);
+      if (anchor) {
+        const top = anchor.getBoundingClientRect().top + window.scrollY - scrollPadding;
+        const destination = Math.min(maxScroll, Math.max(0, top));
+        if (Math.abs(window.scrollY - destination) <= 2) {
+          setActive(anchor.id);
+          return;
+        }
+      }
+
+      if (maxScroll > 0 && window.scrollY >= maxScroll - 2) {
+        setActive('contact');
+        return;
+      }
+
+      const threshold = Math.min(140, window.innerHeight / 4);
+      const current = sections.flatMap((section) => section ? [{ id: section.id, top: section.getBoundingClientRect().top }] : [])
+        .filter(({ top }) => top <= threshold)
+        .sort((first, second) => second.top - first.top)[0];
+      setActive(current?.id ?? 'home');
+    }
+    updateActive();
+    window.addEventListener('scroll', updateActive, { passive: true });
+    window.addEventListener('resize', updateActive);
+    window.addEventListener('hashchange', updateActive);
+    return () => {
+      window.removeEventListener('scroll', updateActive);
+      window.removeEventListener('resize', updateActive);
+      window.removeEventListener('hashchange', updateActive);
+    };
+  }, []);
+
+  const links = sectionIds.map((id, index) => (
+    <a key={id} href={'#' + id} aria-current={id === active ? 'location' : undefined}
+      onClick={() => { if (menu.current) menu.current.open = false; }}>
+      {id === 'lab' && <FlaskConical size={14} />}{t.nav[index]}
+    </a>
+  ));
+
+  const alternate = locale === 'pt' ? 'en' : 'pt';
+
+  return (
+    <header className="site-header">
+      <div className="shell header-inner">
+        <a className="brand" href="#home">
+          <span className="brand-mark" aria-hidden="true"><i />NS</span>
+          <span className="brand-name">Neemias Sales<small>{locale === 'pt' ? 'Analista de QA' : 'QA Engineer'}</small></span>
+        </a>
+        <nav className="desktop-nav" aria-label={t.menu}>{links}</nav>
+        <div className="header-actions">
+          <a className="social" aria-label="GitHub" href={github} target="_blank" rel="noopener noreferrer"><Github size={17} /></a>
+          <a className="social" aria-label="LinkedIn" href={linkedin} target="_blank" rel="noopener noreferrer"><Linkedin size={16} /></a>
+          <a className="language" href={'/' + alternate + (active === 'home' ? '' : '#' + active)} hrefLang={alternate} lang={alternate}
+            aria-label={alternate === 'en' ? 'English' : 'Português'}
+            onClick={(event) => {
+              const hash = window.location.hash;
+              if (hash) {
+                event.currentTarget.href = '/' + alternate + hash;
+              }
+            }}>{alternate.toUpperCase()}</a>
+          <a className="resume" href={resume} target="_blank" rel="noopener noreferrer">{t.resume}<ArrowUpRight size={14} /></a>
+          <details className="mobile-menu" ref={menu}>
+            <summary>{t.menu}</summary>
+            <nav aria-label={t.menu}>{links}</nav>
+          </details>
+        </div>
+      </div>
+    </header>
+  );
+}
