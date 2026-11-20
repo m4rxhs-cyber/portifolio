@@ -152,7 +152,10 @@ export function TestLab({ locale, embedded = false }: { locale: Locale; embedded
         <a href={'/' + locale + '#lab'}><ArrowLeft size={16} />{t.back}</a>
         <a href={'/' + alternate + '/test-lab#' + module} hrefLang={alternate} lang={alternate}>{alternate.toUpperCase()}</a>
       </header>}
-      <div className="lab-intro"><FlaskConical aria-hidden="true" /><Title>Test Lab</Title><p>{t.intro}</p></div>
+      <div className="lab-intro">
+        <Title><FlaskConical aria-hidden="true" />Test Lab</Title>
+        <p>{t.intro}</p>
+      </div>
       <nav className="lab-tabs" aria-label={t.modules}>
         {modules.map((id) => {
           const Icon = moduleIcons[id];

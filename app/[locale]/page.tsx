@@ -4,6 +4,8 @@ import {
   Infinity as InfinityIcon, Linkedin, Mail, Play, Timer, Users, CheckCheck,
 } from 'lucide-react';
 import { Header } from '@/components/Header';
+import { AboutSection } from '@/components/AboutSection';
+import { LaptopNetworkCable } from '@/components/LaptopNetworkCable';
 import { NetworkConnections } from '@/components/NetworkConnections';
 import { QAWorkflow } from '@/components/QAWorkflow';
 import { TestExecutionDashboard } from '@/components/TestExecutionDashboard';
@@ -65,6 +67,7 @@ export default async function Portfolio({ params }: { params: Promise<{ locale: 
               <li key={value}><Icon aria-hidden="true" /><div><strong>{value}</strong><span>{t.metrics[i]}</span></div></li>
             ))}
           </ul>
+          <LaptopNetworkCable />
         </div>
         <section id="projects" className="shell featured">
           <div className="qa-project-intro">
@@ -98,9 +101,7 @@ export default async function Portfolio({ params }: { params: Promise<{ locale: 
           <NetworkConnections segment="workflow" />
           <QAWorkflow locale={locale} />
         </section>
-        <section id="about" className="shell supporting">
-          <h2>{t.about}</h2><p className="profile-role">{profile.role}</p><p>{profile.intro}</p>
-        </section>
+        <AboutSection locale={locale} />
         <section id="project-details" className="shell supporting">
           <h2>{t.details}</h2>
           <div className="supporting-grid">
