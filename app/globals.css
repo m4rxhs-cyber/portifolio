@@ -48,28 +48,39 @@ a:focus-visible, summary:focus-visible { outline: 2px solid #ff626b; outline-off
 
 .hero { position: relative; isolation: isolate; min-height: clamp(307px, 24vw, 420px); }
 .hero-scene {
-  --workshop-width: 100%;
+  --studio-shade: linear-gradient(90deg, #090b0d 0%, #090b0d82 24%, transparent 52%);
   position: absolute;
   z-index: -1;
   width: 100%;
   height: calc(100% + 74px);
   top: -35px;
-  background: linear-gradient(0deg, #090b0d 0%, transparent 21%), linear-gradient(90deg,#090b0dc0,#090b0d50 51%,transparent 75%), url('/workshop-v2-qa-mug.webp') right / var(--workshop-width) 100% no-repeat;
   overflow: clip;
 }
-.laptop-projection { position: absolute; inset: 0 0 auto auto; width: var(--workshop-width); height: 100%; max-width: none; }
+.hero-scene::before, .laptop-projection {
+  position: absolute;
+  inset: 0 0 auto auto;
+  height: 100%;
+  width: auto;
+  max-width: none;
+  aspect-ratio: 1774 / 735;
+}
+.hero-scene::before {
+  content: '';
+  background: linear-gradient(0deg, #090b0d 0%, transparent 21%), var(--studio-shade), url('/software-engineering-studio.webp') center / 100% 100% no-repeat;
+  mask-image: linear-gradient(90deg, transparent, #000 22%);
+}
 .laptop-artboard { position: relative; width: 1920px; height: 640px; container-type: inline-size; }
 .laptop-screen {
   position: absolute;
-  /* Inner bezel corners in workshop-v2-qa-mug.webp: TL (1164,105), TR (1686,74), BR (1648,490), BL (1104,479). */
-  left: 1164px;
-  top: 105px;
-  width: 540px;
-  height: 405px;
+  /* Screen corners in the projection canvas: top left (1112,168), top right (1811,132), bottom right (1773,502), bottom left (1027,488). */
+  left: 1112px;
+  top: 168px;
+  width: 685px;
+  height: 365px;
   transform-origin: top left;
   transform: matrix3d(
-    .8702822546, -.0516834289, 0, -.0001846445,
-    -.141125026, .8796793288, 0, -.000117052,
+    .8852341334, -.0455914575, 0, -.0001934246,
+    -.2166331423, .8155600651, 0, -.0001911008,
     0, 0, 1, 0,
     0, 0, 0, 1
   );
@@ -207,7 +218,7 @@ a:focus-visible, summary:focus-visible { outline: 2px solid #ff626b; outline-off
   .hero-actions { gap: 8px; margin-top: 16px; }
   .button { padding-inline: 13px; min-height: 42px; }
   .button-primary { min-width: 0; }
-  .hero-scene { position: relative; top: auto; margin-top: 13px; height: clamp(235px,62vw,380px); --workshop-width: 230%; }
+  .hero-scene { position: relative; top: auto; margin-top: 13px; height: clamp(235px,62vw,380px); --studio-shade: linear-gradient(90deg, #090b0d28, transparent 32%); }
   .test-dashboard { font-size: .9cqw; }
   .dashboard-heading strong { font-size: 1.08cqw; }
   .run-stats dd { font-size: .91cqw; }
