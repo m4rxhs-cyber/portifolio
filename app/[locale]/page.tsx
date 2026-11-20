@@ -53,6 +53,9 @@ export default async function Portfolio({ params }: { params: Promise<{ locale: 
               </div>
             </div>
           </div>
+          <div className="hero-mobile-scene" role="img" aria-label={locale === 'pt'
+            ? 'Estúdio de engenharia com caneca QA e smartphone exibindo um painel demonstrativo de testes Android, regressão e E2E.'
+            : 'Engineering studio with a QA mug and a smartphone showing a demo dashboard for Android, regression, and E2E tests.'} />
         </section>
         <div className="shell metrics-wrap">
           <ul className="metrics">
@@ -64,7 +67,7 @@ export default async function Portfolio({ params }: { params: Promise<{ locale: 
         <section id="projects" className="shell featured">
           <div className="featured-heading">
             <div><p className="section-label">{t.featured}</p><h2>{t.cases}</h2></div>
-            <a href={`/${locale}#project-details`} target="_blank" rel="noopener noreferrer">{t.all}<ArrowRight size={16} /></a>
+            <a href={`${github}?tab=repositories`} target="_blank" rel="noopener noreferrer">{t.all}<ArrowRight size={16} /></a>
           </div>
           <div className="project-grid">
             {featuredProjects.map((project, i) => (

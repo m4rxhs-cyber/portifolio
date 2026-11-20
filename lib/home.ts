@@ -26,7 +26,7 @@ export const home = {
   },
   en: {
     nav: ['Home', 'About', 'Projects', 'Test Lab', 'Stack', 'Timeline', 'Contact'],
-    resume: 'Résumé',
+    resume: 'Resume',
     menu: 'Menu',
     title: 'Quality that delivers',
     emphasis: 'performance.',
