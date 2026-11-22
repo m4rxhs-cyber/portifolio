@@ -24,7 +24,7 @@ export const aboutCopy = {
       'Análise e Desenvolvimento de Software pelo Unilavras',
       ', onde recebi ',
       'Honra ao Mérito',
-      ' pelo desempenho acadêmico, alcançando a segunda maior média geral da instituição. Continuo aprofundando meus conhecimentos em engenharia de qualidade, automação e inteligência artificial aplicada a testes.',
+      ' pelo desempenho acadêmico, alcançando a segunda maior média geral da instituição. Busco evoluir continuamente em engenharia de qualidade, automação e aplicação de inteligência artificial nos processos de teste.',
     ],
     specialties: 'Experiência e especialidades',
     cards: [
@@ -47,7 +47,7 @@ export const aboutCopy = {
       'Software Analysis and Development from Unilavras',
       ', where I received an ',
       'Academic Merit Award',
-      ' for earning the second-highest overall average at the institution. I continue to deepen my knowledge of quality engineering, automation, and AI applied to testing.',
+      ' for my academic performance, earning the second-highest overall grade average at the institution. I continue to develop my skills in quality engineering, automation, and applying artificial intelligence to software testing.',
     ],
     specialties: 'Experience and specialties',
     cards: [

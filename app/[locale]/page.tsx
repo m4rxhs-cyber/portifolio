@@ -7,6 +7,7 @@ import { Header } from '@/components/Header';
 import { AboutSection } from '@/components/AboutSection';
 import { LaptopNetworkCable } from '@/components/LaptopNetworkCable';
 import { NetworkConnections } from '@/components/NetworkConnections';
+import { ProjectDetails } from '@/components/ProjectDetails';
 import { QAWorkflow } from '@/components/QAWorkflow';
 import { TestExecutionDashboard } from '@/components/TestExecutionDashboard';
 import { TestLab } from '@/components/test-lab/TestLab';
@@ -102,17 +103,7 @@ export default async function Portfolio({ params }: { params: Promise<{ locale: 
           <QAWorkflow locale={locale} />
         </section>
         <AboutSection locale={locale} />
-        <section id="project-details" className="shell supporting">
-          <h2>{t.details}</h2>
-          <div className="supporting-grid">
-            {featuredProjects.map((project, i) => (
-              <article id={project.id} key={project.id}>
-                <h3>{t.projectTitles[i]}</h3><p>{profile.projects[project.contentIndex].desc}</p>
-                {'url' in project && <a href={project.url} target="_blank" rel="noopener noreferrer">GitHub <ArrowUpRight size={14} /></a>}
-              </article>
-            ))}
-          </div>
-        </section>
+        <ProjectDetails key={locale} locale={locale} />
         <section id="lab" className="shell supporting">
           <TestLab locale={locale} embedded />
         </section>
