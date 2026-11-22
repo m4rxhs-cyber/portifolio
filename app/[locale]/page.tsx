@@ -8,6 +8,7 @@ import { AboutSection } from '@/components/AboutSection';
 import { LaptopNetworkCable } from '@/components/LaptopNetworkCable';
 import { NetworkConnections } from '@/components/NetworkConnections';
 import { ProjectDetails } from '@/components/ProjectDetails';
+import { StackSection } from '@/components/StackSection';
 import { QAWorkflow } from '@/components/QAWorkflow';
 import { TestExecutionDashboard } from '@/components/TestExecutionDashboard';
 import { TestLab } from '@/components/test-lab/TestLab';
@@ -107,12 +108,7 @@ export default async function Portfolio({ params }: { params: Promise<{ locale: 
         <section id="lab" className="shell supporting">
           <TestLab locale={locale} embedded />
         </section>
-        <section id="stack" className="shell supporting">
-          <h2>{profile.stackTitle}</h2>
-          <div className="supporting-grid">{profile.stack.map(([label, ...tools]) => (
-            <article key={label}><h3>{label}</h3><p>{tools.join(' · ')}</p></article>
-          ))}</div>
-        </section>
+        <StackSection locale={locale} />
         <section id="experience" className="shell supporting">
           <h2>{profile.experienceTitle}</h2>
           {profile.experience.map((entry) => (
