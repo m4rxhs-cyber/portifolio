@@ -18,7 +18,7 @@ export const home = {
     tags: ['E2E · Web', 'API', 'Mobile · QA'],
     projectTitles: ['Cypress E2E Automation', 'Testes de API – Contratos e Regras', 'Automação Mobile'],
     projectDescriptions: ['Framework Cypress com Page Object Model e execução no GitHub Actions.', 'Validação de APIs REST, contratos, códigos HTTP e regras de negócio com Postman.', 'Automação com Cypress e Maestro para um app Android usado por mais de 1.000 motoristas.'],
-    details: 'Detalhes dos projetos',
+    projectRepository: 'Ver repositório no GitHub',
     about: 'Sobre mim',
     skip: 'Pular para o conteúdo',
     years: '4 anos',
@@ -26,7 +26,7 @@ export const home = {
   },
   en: {
     nav: ['Home', 'About', 'Projects', 'Test Lab', 'Stack', 'Timeline', 'Contact'],
-    resume: 'Résumé',
+    resume: 'Resume',
     menu: 'Menu',
     title: 'Quality that delivers',
     emphasis: 'performance.',
@@ -41,7 +41,7 @@ export const home = {
     tags: ['E2E · Web', 'API', 'Mobile · QA'],
     projectTitles: ['Cypress E2E Automation', 'API Testing – Contracts and Rules', 'Mobile Automation'],
     projectDescriptions: ['Cypress framework with Page Object Model and GitHub Actions runs.', 'REST API, contract, status code and business rule validation with Postman.', 'Cypress and Maestro automation for an Android app used by more than 1,000 drivers.'],
-    details: 'Project details',
+    projectRepository: 'View repository on GitHub',
     about: 'About me',
     skip: 'Skip to content',
     years: '4 years',
@@ -49,7 +49,7 @@ export const home = {
   },
 } as const satisfies Record<Locale, object>;
 
-export const sectionIds = ['home', 'about', 'projects', 'lab', 'stack', 'experience', 'contact'] as const;
+export const sectionIds = ['home', 'about', 'project-details', 'lab', 'stack', 'experience', 'contact'] as const;
 export const github = 'https://github.com/m4rxhs-cyber';
 export const linkedin = 'https://linkedin.com/in/neemias-sales';
 export const resume = '/curriculo-neemias-sales.pdf';
