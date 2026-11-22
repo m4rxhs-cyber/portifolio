@@ -5,6 +5,7 @@ import {
 } from 'lucide-react';
 import { Header } from '@/components/Header';
 import { AboutSection } from '@/components/AboutSection';
+import { CareerTimeline } from '@/components/CareerTimeline';
 import { LaptopNetworkCable } from '@/components/LaptopNetworkCable';
 import { NetworkConnections } from '@/components/NetworkConnections';
 import { ProjectDetails } from '@/components/ProjectDetails';
@@ -109,12 +110,7 @@ export default async function Portfolio({ params }: { params: Promise<{ locale: 
           <TestLab locale={locale} embedded />
         </section>
         <StackSection locale={locale} />
-        <section id="experience" className="shell supporting">
-          <h2>{profile.experienceTitle}</h2>
-          {profile.experience.map((entry) => (
-            <article className="experience-entry" key={entry.date}><p>{entry.date}</p><div><h3>{entry.role}</h3><p>{entry.desc}</p></div></article>
-          ))}
-        </section>
+        <CareerTimeline locale={locale} />
       </main>
       <footer id="contact" className="shell supporting">
         <h2>{profile.contactTitle}</h2><p>{profile.contactText}</p>
