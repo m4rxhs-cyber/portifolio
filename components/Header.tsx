@@ -1,16 +1,18 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 import { ArrowUpRight, FlaskConical, Github, Linkedin } from 'lucide-react';
 import type { Locale } from '@/lib/content';
 import { github, home, linkedin, resume, sectionIds } from '@/lib/home';
 
-export function Header({ locale }: { locale: Locale }) {
+export function Header({ locale, labPage = false }: { locale: Locale; labPage?: boolean }) {
   const t = home[locale];
   const [active, setActive] = useState<string>('home');
   const menu = useRef<HTMLDetailsElement>(null);
 
   useEffect(() => {
+    if (labPage) return;
     const sections = sectionIds.map((id) => document.getElementById(id));
     function updateActive() {
       const root = document.documentElement;
@@ -46,33 +48,38 @@ export function Header({ locale }: { locale: Locale }) {
       window.removeEventListener('resize', updateActive);
       window.removeEventListener('hashchange', updateActive);
     };
-  }, []);
+  }, [labPage]);
 
-  const links = sectionIds.map((id, index) => (
-    <a key={id} href={'#' + id} aria-current={id === active ? 'location' : undefined}
-      onClick={() => { if (menu.current) menu.current.open = false; }}>
-      {id === 'lab' && <FlaskConical size={14} />}{t.nav[index]}
-    </a>
-  ));
+  const closeMenu = () => { if (menu.current) menu.current.open = false; };
+  const links = <>
+    {sectionIds.map((id, index) => labPage ? (
+      <Link key={id} href={`/${locale}#${id}`} onClick={closeMenu}>{t.nav[index]}</Link>
+    ) : (
+      <a key={id} href={'#' + id} aria-current={id === active ? 'location' : undefined} onClick={closeMenu}>{t.nav[index]}</a>
+    ))}
+    <Link href={`/${locale}/test-lab`} aria-current={labPage ? 'page' : undefined} onClick={closeMenu}>
+      <FlaskConical size={14} aria-hidden="true" />{t.nav[sectionIds.length]}
+    </Link>
+  </>;
 
   const alternate = locale === 'pt' ? 'en' : 'pt';
 
   return (
     <header className="site-header">
       <div className="shell header-inner">
-        <a className="brand" href="#home">
+        <Link className="brand" href={labPage ? `/${locale}` : '#home'}>
           <span className="brand-mark" aria-hidden="true"><i />NS</span>
           <span className="brand-name">Neemias Sales<small>{locale === 'pt' ? 'Analista de QA' : 'QA Engineer'}</small></span>
-        </a>
+        </Link>
         <nav className="desktop-nav" aria-label={t.menu}>{links}</nav>
         <div className="header-actions">
           <a className="social" aria-label="GitHub" href={github} target="_blank" rel="noopener noreferrer"><Github size={17} /></a>
           <a className="social" aria-label="LinkedIn" href={linkedin} target="_blank" rel="noopener noreferrer"><Linkedin size={16} /></a>
-          <a className="language" href={'/' + alternate + (active === 'home' ? '' : '#' + active)} hrefLang={alternate} lang={alternate}
+          <a className="language" href={'/' + alternate + (labPage ? '/test-lab' : active === 'home' ? '' : '#' + active)} hrefLang={alternate} lang={alternate}
             aria-label={alternate === 'en' ? 'English' : 'Português'}
             onClick={(event) => {
               const hash = window.location.hash;
-              if (hash) {
+              if (hash && !labPage) {
                 event.currentTarget.href = '/' + alternate + hash;
               }
             }}>{alternate.toUpperCase()}</a>

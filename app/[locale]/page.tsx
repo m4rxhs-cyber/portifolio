@@ -1,20 +1,20 @@
 import { notFound } from 'next/navigation';
+import Link from 'next/link';
 import {
-  ArrowRight, ArrowUpRight, CodeXml, FlaskConical, Github,
-  Infinity as InfinityIcon, Linkedin, Mail, Play, Timer, Users, CheckCheck,
+  ArrowRight, ArrowUpRight, CodeXml, FlaskConical,
+  Infinity as InfinityIcon, Play, Timer, Users, CheckCheck,
 } from 'lucide-react';
 import { Header } from '@/components/Header';
 import { AboutSection } from '@/components/AboutSection';
 import { CareerTimeline } from '@/components/CareerTimeline';
+import { ContactSection } from '@/components/ContactSection';
 import { LaptopNetworkCable } from '@/components/LaptopNetworkCable';
 import { NetworkConnections } from '@/components/NetworkConnections';
 import { ProjectDetails } from '@/components/ProjectDetails';
 import { StackSection } from '@/components/StackSection';
 import { QAWorkflow } from '@/components/QAWorkflow';
 import { TestExecutionDashboard } from '@/components/TestExecutionDashboard';
-import { TestLab } from '@/components/test-lab/TestLab';
-import { content } from '@/lib/content';
-import { featuredProjects, github, home, linkedin, resume } from '@/lib/home';
+import { featuredProjects, github, home } from '@/lib/home';
 
 export function generateStaticParams() {
   return [{ locale: 'pt' }, { locale: 'en' }];
@@ -25,7 +25,6 @@ export default async function Portfolio({ params }: { params: Promise<{ locale: 
   if (locale !== 'pt' && locale !== 'en') notFound();
 
   const t = home[locale];
-  const profile = content[locale];
   const metrics = [
     { value: t.years, Icon: CodeXml },
     { value: '20 min', Icon: Timer },
@@ -56,7 +55,7 @@ export default async function Portfolio({ params }: { params: Promise<{ locale: 
               <p className="hero-intro">{t.intro}</p>
               <div className="hero-actions">
                 <a className="button button-primary" href="#projects"><Play size={15} />{t.projects}</a>
-                <a className="button button-outline" href="#lab"><FlaskConical size={16} />{t.lab}</a>
+                <Link className="button button-outline" href={`/${locale}/test-lab`}><FlaskConical size={16} />{t.lab}</Link>
               </div>
             </div>
           </div>
@@ -106,21 +105,10 @@ export default async function Portfolio({ params }: { params: Promise<{ locale: 
         </section>
         <AboutSection locale={locale} />
         <ProjectDetails key={locale} locale={locale} />
-        <section id="lab" className="shell supporting">
-          <TestLab locale={locale} embedded />
-        </section>
         <StackSection locale={locale} />
         <CareerTimeline locale={locale} />
       </main>
-      <footer id="contact" className="shell supporting">
-        <h2>{profile.contactTitle}</h2><p>{profile.contactText}</p>
-        <div className="hero-actions">
-          <a className="button button-outline" href="mailto:contato.neemias.sales@gmail.com"><Mail size={16} />E-mail</a>
-          <a className="button button-outline" href={linkedin} target="_blank" rel="noopener noreferrer"><Linkedin size={16} />LinkedIn</a>
-          <a className="button button-outline" href={github} target="_blank" rel="noopener noreferrer"><Github size={16} />GitHub</a>
-          <a className="button button-outline" href={resume} target="_blank" rel="noopener noreferrer"><ArrowUpRight size={16} />{t.resume}</a>
-        </div>
-      </footer>
+      <ContactSection locale={locale} />
     </>
   );
 }

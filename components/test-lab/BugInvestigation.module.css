@@ -1,0 +1,145 @@
+.layout {
+  display: grid;
+  gap: 12px;
+  align-items: start;
+  grid-template-columns: minmax(0, 1fr);
+  font-size: .875rem;
+}
+
+.panel {
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid var(--lab-border);
+  border-radius: 10px;
+  background: var(--lab-panel);
+  overflow-wrap: anywhere;
+}
+
+.panel :is(h3, h4, h5, h6) { font-weight: 750; }
+.panel h3 { font-size: var(--type-subheading); }
+.panel h4 { font-size: 1rem; }
+.panel :is(h3, h4, h5) { display: flex; align-items: center; gap: 8px; }
+.panel :is(h3, h4, h5) svg { flex: none; color: #ff626b; }
+.panel p, .criteria { color: var(--text-description); }
+.panel :is(button, select, input, textarea, [role='tabpanel']):focus-visible { outline: 2px solid #ff626b; outline-offset: 2px; }
+.panel :is(input, textarea, select, button) { min-width: 0; }
+.panel :is(input, textarea, select) {
+  width: 100%;
+  padding: 7px 9px;
+  border: 1px solid var(--lab-border);
+  border-radius: 6px;
+  background: #0d1217;
+  color: var(--text);
+  color-scheme: dark;
+}
+
+.panel textarea { resize: vertical; }
+.panel label { display: grid; gap: 4px; min-width: 0; }
+.scenarioSelect { margin-top: 9px; min-height: 44px; text-overflow: ellipsis; }
+.scenarios, .about { display: none; }
+.scenarios button {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 3px;
+  width: 100%;
+  padding: 8px;
+  text-align: left;
+  border: 1px solid var(--lab-border);
+  border-radius: 7px;
+}
+.scenarios button[aria-pressed='true'] { background: #2b191c; border-color: #ef525c; }
+.scenarios strong { grid-column: 1 / -1; }
+.caseId { color: var(--text-description); font: .75rem Consolas, monospace; }
+.about { border-top: 1px solid var(--lab-border); margin-top: 14px; padding-top: 12px; }
+.summary, .demo, .observed {
+  padding: 11px;
+  margin-block: 12px;
+  border: 1px solid var(--lab-border);
+  border-radius: 8px;
+  background: #0d1217;
+}
+.summaryMeta { display: flex; flex-wrap: wrap; align-items: center; gap: 5px; margin-block: 3px; }
+.badge { border: 1px solid var(--lab-border); border-radius: 5px; padding: 1px 5px; font-size: .75rem; }
+.badge[data-severity='low'] { color: #9be0ac; border-color: #426b4e; }
+.badge[data-severity='medium'] { color: #f7ca7b; border-color: #796037; }
+.badge[data-severity='high'], .panel .accent { color: #ff737c; }
+.badge[data-severity='high'] { border-color: #a24e55; }
+.tabContent { margin-top: 10px; }
+.tabContent :is(ol, ul) { padding-left: 1.4rem; color: var(--text-description); }
+.tabContent ol { list-style: decimal; }
+.tabContent ul { list-style: disc; }
+.tabContent li + li { margin-top: 6px; }
+.demoGrid, .reportGrid { display: grid; gap: 8px; grid-template-columns: minmax(0, 1fr); }
+.demo h5 { margin-bottom: 8px; }
+.surface { min-width: 0; border-radius: 6px; padding: 9px; background: var(--lab-panel); display: grid; align-content: start; gap: 7px; }
+.surface pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+.surface mark { background: #412026; color: #ff98a0; }
+.product, .actions, .totals div { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.product span, .totals dd { margin-left: auto; }
+.coupon { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 6px; }
+.couponStatus { font-size: .8125rem; }
+.totals div { justify-content: space-between; padding-block: 4px; }
+.total { border-top: 1px solid var(--lab-border); color: #ff737c; font-weight: 750; }
+.observed { margin-bottom: 0; border-color: #80414a; background: #25191d; }
+.evidence { margin-top: 10px; }
+.evidence dt { font-weight: 750; }
+.evidence dd { color: var(--text-description); margin-bottom: 8px; }
+.report { display: grid; gap: 8px; margin-top: 11px; }
+.actions { margin-block: 10px 5px; }
+.actions button, .surface button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-height: 44px;
+  padding: 6px 10px;
+  border: 1px solid var(--lab-border);
+  border-radius: 6px;
+}
+.coupon button { border-color: #a4444b; background: #2b191c; }
+.panel button:disabled { color: var(--text-description); background: #24272a; cursor: not-allowed; }
+.qualityIndicator {
+  display: grid;
+  place-content: center;
+  width: 106px;
+  aspect-ratio: 1;
+  margin: 15px auto;
+  padding: 6px;
+  text-align: center;
+  border: 5px solid var(--lab-border);
+  border-radius: 50%;
+  font-size: .8125rem;
+}
+.criteria { display: grid; gap: 7px; }
+.criteria li { display: flex; gap: 6px; align-items: baseline; }
+.criteria svg { flex: none; align-self: center; }
+.reporting { display: grid; gap: 12px; min-width: 0; }
+
+@media (min-width: 480px) {
+  .demoGrid, .reportGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 768px) {
+  .layout { grid-template-columns: minmax(160px, .75fr) minmax(0, 2fr); }
+  .scenarioSelect { display: none; }
+  .scenarios { display: grid; gap: 5px; margin-top: 10px; }
+  .about { display: block; }
+  .reporting { grid-column: 1 / -1; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); align-items: start; }
+}
+@media (min-width: 1080px) {
+  .layout { grid-template-columns: minmax(150px, .75fr) minmax(0, 2.3fr) minmax(230px, 1.35fr); }
+  .reporting { grid-column: auto; grid-template-columns: minmax(0, 1fr); }
+}
+@media (min-width: 1360px) {
+  .layout { grid-template-columns: minmax(150px, .8fr) minmax(0, 2.45fr) minmax(235px, 1.45fr) minmax(145px, .75fr); }
+  .reporting { display: contents; }
+}
+
+.evidence dd { white-space: pre-wrap; }
+.qualityIndicator strong { font-size: 1.15rem; }
+.qualityIndicator[data-level='0'], .qualityIndicator[data-level='1'] { border-color: #87545c; }
+.qualityIndicator[data-level='2'] { border-color: #827045; }
+.qualityIndicator[data-level='3'], .qualityIndicator[data-level='4'] { border-color: #537a5f; }
+.aboutResult { display: grid; gap: 6px; border-top: 1px solid var(--lab-border); margin-top: 12px; padding-top: 10px; }
+.actions .validate { background: #442025; border-color: #ef525c; }
+.observed button { min-height: 44px; text-decoration: underline; }

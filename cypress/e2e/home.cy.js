@@ -7,6 +7,9 @@ describe('Engineering Dark', () => {
     cy.get('.test-dashboard').should('contain.text', 'Simulação');
     cy.get('.metrics li').should('have.length', 5);
     cy.get('.project-card').should('have.length', 3);
+    cy.get('#lab').should('not.exist');
+    cy.get('.desktop-nav a').last().should('have.attr', 'href', '/pt/test-lab');
+    cy.get('.hero a[href="/pt/test-lab"]').should('not.have.attr', 'target');
     cy.request('/curriculo-neemias-sales.pdf').its('headers.content-type').should('include', 'application/pdf');
   });
 
@@ -37,10 +40,10 @@ describe('Engineering Dark', () => {
     cy.viewport(390, 844);
     cy.visit('/pt');
     cy.get('.mobile-menu summary').click();
-    cy.get('.mobile-menu a[href="#lab"]').click();
-    cy.location('hash').should('eq', '#lab');
+    cy.get('.mobile-menu nav a').last().should('have.attr', 'href', '/pt/test-lab').click();
+    cy.location('pathname').should('eq', '/pt/test-lab');
     cy.get('.mobile-menu').should('not.have.attr', 'open');
-    cy.get('#lab h2').should('be.visible');
+    cy.get('#lab-title').should('be.visible');
     cy.document().its('documentElement').should((root) => {
       expect(root.scrollWidth).to.equal(root.clientWidth);
     });

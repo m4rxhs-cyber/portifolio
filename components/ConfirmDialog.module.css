@@ -1,0 +1,25 @@
+.dialog {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: min(100% - 32px, 460px);
+  max-height: calc(100dvh - 32px);
+  padding: clamp(16px, 3vw, 24px);
+  border: 1px solid #49535e;
+  border-radius: 12px;
+  background: #151b20;
+  color: var(--text);
+  box-shadow: 0 16px 42px #0006;
+  overflow: auto;
+}
+.dialog::backdrop { background: #0009; }
+.heading { display: flex; align-items: center; gap: 10px; }
+.heading h2 { font-size: var(--type-subheading); font-weight: 750; line-height: 1.25; }
+.warning { flex: none; color: #ff626b; }
+.dialog p { margin-top: 8px; color: var(--text-description); line-height: 1.5; }
+.dialog .error { color: #ff989f; }
+.actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; margin-top: 18px; }
+.actions button { min-height: 44px; padding: 6px 13px; border: 1px solid #49535e; border-radius: 6px; background: #1e262d; font-weight: 650; }
+.actions button[data-variant='destructive'] { border-color: #d73b46; background: #a71923; color: #fff; }
+.actions button[aria-disabled='true'] { opacity: .65; cursor: default; }
+.actions button:focus-visible { outline: 2px solid #ff626b; outline-offset: 2px; }

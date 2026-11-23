@@ -1,104 +1,48 @@
-describe('Test Lab', () => {
-  it('validates required fields, rejects an invalid login, signs in and signs out', () => {
+describe('Test Lab preview', () => {
+  it('runs local scenarios and preserves selections across modules and modes', () => {
+    cy.viewport(1280, 900);
+    cy.intercept('POST', '/api/test-lab', () => { throw new Error('Preview must not execute tests'); });
     cy.visit('/pt/test-lab');
-    cy.contains('button', 'Entrar').click();
-    cy.contains('[role="status"]', 'Preencha usuário e senha.');
-    cy.get('[name="demo-user"]').type('qa-demo');
-    cy.get('[name="demo-password"]').type('incorrect');
-    cy.contains('button', 'Entrar').click();
-    cy.contains('[role="status"]', 'Não foi possível entrar. Confira os dados e tente novamente.')
-      .should('contain.text', 'Desconectado');
-    cy.get('[name="demo-password"]').should('have.value', 'incorrect');
-    cy.get('.lab-assertions').should('contain.text', 'Obtido false').and('contain.text', 'PASS');
-    cy.get('[name="demo-user"]').clear().type('unknown');
-    cy.contains('button', 'Entrar').click();
-    cy.get('.lab-history').should('contain.text', 'TC-AUTH-003');
-    cy.get('[name="demo-password"]').should('have.value', 'incorrect');
-    cy.contains('button', 'Preencher credenciais de teste').click();
-    cy.get('[name="demo-user"]').should('have.value', 'qa-demo');
-    cy.get('[name="demo-password"]').should('have.value', 'Demo-QA-2026');
-    cy.contains('button', 'Entrar').click();
-    cy.contains('[role="status"]', 'Sessão iniciada.');
-    cy.contains('button', 'Sair').click();
-    cy.contains('[role="status"]', 'Sessão encerrada.');
-    cy.get('[name="demo-password"]').should('have.value', 'Demo-QA-2026');
-    cy.contains('button', 'Executar cenário').click();
-    cy.get('.lab-status[role="status"]').should('contain.text', 'Aprovado');
+    cy.get('.desktop-nav a[aria-current="page"]').should('have.attr', 'href', '/pt/test-lab');
+    cy.get('[aria-labelledby="lab-modules-title"][role="group"] button').should('have.length', 5);
+    cy.contains('button', 'Login com usuário bloqueado').click();
+    cy.get('#lab-workspace pre').should('contain.text', 'ACCOUNT_LOCKED');
+    cy.contains('button', 'Executar cenário').should('be.enabled').click();
+    cy.get('#lab-workspace [role="status"]').should('contain.text', 'Aprovado');
+
+    cy.contains('button', 'API Testing').click();
+    cy.contains('button', 'TC-API-004').click();
+    cy.contains('#rest-scenarios button', 'Executar cenário').click();
+    cy.get('#rest-scenarios [role="status"]').should('contain.text', 'Aprovado');
+    cy.contains('button', 'Request Builder').click();
+    cy.contains('button', 'Enviar requisição').click();
+    cy.get('#rest-builder').should('contain.text', '1 de 1 verificações aprovadas');
+    cy.contains('button', 'Cenários automatizados').click();
+    cy.contains('button', 'TC-API-004').should('have.attr', 'aria-pressed', 'true');
+    cy.contains('button', 'Bug Investigation').click();
+    cy.contains('#lab-workspace h5', 'Test Store').should('be.visible');
+    cy.contains('button', 'Performance').click();
+    cy.get('#lab-workspace').should('contain.text', 'Percentis de latência');
+    cy.contains('button', 'Autenticação').click();
+    cy.contains('button', 'Login com usuário bloqueado').should('have.attr', 'aria-pressed', 'true');
+    cy.location('pathname').should('eq', '/pt/test-lab');
   });
 
-  it('renders an API exchange and distinguishes infrastructure errors', () => {
-    cy.visit('/pt/test-lab#api');
-    cy.get('.lab-scenario-trigger').click();
-    cy.contains('[role="option"]', 'Criar reserva').click();
-    cy.get('.lab-scenario-trigger').should('have.attr', 'aria-expanded', 'false').and('contain.text', 'Criar reserva');
-    cy.intercept('POST', '/api/test-lab', (request) => {
-      expect(request.body).to.deep.equal({ scenario: 'create' });
-      request.reply({
-        id: 'fixture', scenario: 'create', timestamp: '2026-11-19T20:00:00Z', duration: 24, status: 'PASSED',
-        logs: [],
-        assertions: [{ id: 'A-1', label: 'httpStatus', expected: 200, actual: 200, pass: true }],
-        exchanges: [{
-          method: 'POST', path: '/booking', duration: 24, status: 200, timestamp: '2026-11-19T20:00:00Z',
-          requestHeaders: { Accept: 'application/json' }, responseHeaders: { 'content-type': 'application/json' },
-          payload: { firstname: 'QA' }, body: { bookingid: 12 },
-        }],
-      });
-    }).as('booker');
-    cy.contains('button', 'Executar cenário').click();
-    cy.wait('@booker');
-    cy.get('.lab-exchange summary').should('contain.text', '200');
-    cy.get('.lab-inspector').should('contain.text', 'firstname').and('contain.text', 'bookingid');
-    cy.get('.lab-assertions').should('contain.text', 'PASS');
-    cy.intercept('POST', '/api/test-lab', { statusCode: 429, body: { error: 'rateLimited' } });
-    cy.contains('button', 'Executar novamente').click();
-    cy.get('.lab-status[role="status"]').should('contain.text', 'Erro técnico');
-    cy.get('.lab-error').should('contain.text', 'Limite temporário');
-
-    cy.contains('.lab-tabs a', 'Investigação de defeitos').click();
-    cy.get('.lab-status[role="status"]').should('have.text', 'Pronto');
-    cy.get('.lab-exchange, .lab-history').should('not.exist');
-    cy.contains('button', 'Reproduzir cenário').click();
-    cy.get('.lab-report').should('contain.text', 'BUG-001');
-    cy.contains('.lab-tabs a', 'Autenticação').click();
-    cy.get('.lab-status[role="status"]').should('have.text', 'Pronto');
-    cy.get('.lab-history').should('not.exist');
-    cy.contains('.lab-tabs a', 'Testes de API').click();
-    cy.get('.lab-error').should('contain.text', 'Limite temporário');
-    cy.get('.lab-history').should('not.contain.text', 'BUG-001');
-    cy.contains('button', 'Limpar histórico').click();
-    cy.get('.lab-status[role="status"]').should('have.text', 'Pronto');
-    cy.contains('.lab-tabs a', 'Investigação de defeitos').click();
-    cy.get('.lab-report').should('contain.text', 'BUG-001');
-  });
-
-  it('reproduces business-rule defects and preserves the module in English', () => {
-    cy.visit('/pt');
-    cy.get('.hero').contains('a', 'Explorar Test Lab').click();
-    cy.location('pathname').should('eq', '/pt');
-    cy.location('hash').should('eq', '#lab');
-    cy.contains('#lab button', 'Investigação de defeitos').click();
-    cy.contains('button', 'Reproduzir cenário').click();
-    cy.get('.lab-report').should('contain.text', 'BUG-001').and('contain.text', 'Defeito reproduzido');
-    cy.get('.lab-assertions').should('contain.text', '90').and('contain.text', '100');
-    cy.get('.lab-scenario-trigger').first().click();
-    cy.contains('[role="option"]', 'BUG-002').click();
-    cy.contains('button', 'Reproduzir cenário').click();
-    cy.get('.lab-report').should('contain.text', 'BUG-002').and('contain.text', 'qa@');
-    cy.get('.lab-scenario-trigger').first().click();
-    cy.contains('[role="option"]', 'BUG-003').click();
-    cy.contains('button', 'Reproduzir cenário').click();
-    cy.get('.lab-report').should('contain.text', 'BUG-003');
-    cy.get('.language[hreflang="en"]').click();
-    cy.location('pathname').should('eq', '/en');
-    cy.location('hash').should('eq', '#lab');
-    cy.contains('.lab-tabs button[aria-pressed="true"]', 'Bug investigation');
-  });
-
-  it('fits a phone viewport', () => {
+  it('allows a local manual draft and preserves the lab route when switching language', () => {
     cy.viewport(390, 844);
-    cy.visit('/en/test-lab#api');
-    cy.contains('.lab-tabs a[aria-current]', 'API testing');
-    cy.document().its('documentElement').should((root) => {
+    cy.visit('/pt/test-lab');
+    cy.get('#lab-module-select').should('have.value', 'auth').select('manual');
+    cy.get('input[placeholder="Digite seu nome"]').type('QA Demo');
+    cy.contains('button', 'Enviar cadastro').should('be.disabled');
+    cy.contains('label', 'Não executado').find('input').should('be.checked');
+    cy.get('#lab-module-select').select('performance');
+    cy.get('#lab-module-select').select('manual');
+    cy.get('input[placeholder="Digite seu nome"]').should('have.value', 'QA Demo');
+    cy.get('.language').click();
+    cy.location('pathname').should('eq', '/en/test-lab');
+    cy.get('#lab-module-select').select('Manual Testing');
+    cy.contains('button', 'Submit registration').should('be.disabled');
+    cy.document().its('documentElement').should(root => {
       expect(root.scrollWidth).to.equal(root.clientWidth);
     });
   });

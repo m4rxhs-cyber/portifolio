@@ -60,3 +60,25 @@ npm run test:booker -- --write
 ```
 
 Cypress usa respostas controladas para testar a interface. O comando `test:booker` separa os testes HTTP reais. Use `LAB_BASE_URL` ou `-- --config baseUrl=...` no Cypress para indicar outra porta. A opção `--write` cria dados fictícios no ambiente público e tenta removê-los. O comando retorna falha se qualquer execução registrar divergência ou erro técnico.
+# Test Lab — autenticação demonstrativa
+
+O módulo Autenticação usa `POST /api/test-lab/auth/login`, `GET /api/test-lab/auth/session` e `POST /api/test-lab/auth/logout`. As contas `demo@example.test` e `locked@example.test` e a senha `demo-password` são fictícias. O navegador conserva o token apenas durante a execução. A API guarda somente o hash do token (como nome do arquivo) e o horário de expiração, revoga a sessão no logout e rejeita tokens expirados após dois minutos.
+
+Em desenvolvimento e em uma única instância Node.js, o armazenamento padrão é um subdiretório privado no diretório temporário. Em produção, configure `LAB_AUTH_SESSION_DIR` com um caminho gravável e privado. Instâncias diferentes precisam compartilhar esse diretório para que login, autorização e logout vejam o mesmo estado. Um diretório temporário isolado por instância não é suficiente em hospedagem serverless distribuída. A implantação precisa preservar a origem pública na requisição encaminhada e usar HTTPS. O limite de 180 requisições por minuto e 12 simultâneas é por processo. Para um limite global em múltiplas instâncias, configure a proteção na camada de entrada da hospedagem.
+
+`npm run test:runner` cobre os cenários da API demonstrativa, o isolamento, a expiração e os erros do executor.
+
+## Test Lab — API Testing
+
+A API usa o prefixo `/api/test-lab/rest`. `POST /workspace` cria um ambiente isolado e `DELETE /workspace` o remove. As demais operações usam `X-Demo-Workspace`, emitido pelo servidor e mantido apenas em memória no navegador.
+
+| Caminho | Métodos |
+| --- | --- |
+| `/customers` | GET, POST |
+| `/customers/:id` | GET, PUT, PATCH, DELETE |
+| `/orders` | GET, POST |
+| `/orders/:id` | GET |
+
+Cada cenário abre e remove seu próprio ambiente. O Request Builder reutiliza um ambiente durante a visita, oferece limpeza explícita e mantém até oito respostas na memória da página. O acesso expira 15 minutos após a criação. A remoção de arquivos expirados ocorre na abertura de novos ambientes. Use somente dados fictícios.
+
+Configure `LAB_REST_WORKSPACE_DIR` com um caminho gravável e privado na hospedagem Node.js. Múltiplos processos precisam compartilhar um volume com criação exclusiva de arquivos e renomeação atômica. Armazenamento temporário local não garante consistência em plataformas serverless distribuídas. O limite de 240 requisições por minuto e 12 simultâneas é por processo. Em produção, configure limites distribuídos na camada de entrada, preserve a origem pública nas requisições encaminhadas e use HTTPS. O dispatcher não realiza requisições de saída.

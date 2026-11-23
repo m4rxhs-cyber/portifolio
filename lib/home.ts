@@ -2,7 +2,7 @@ import type { Locale } from './content';
 
 export const home = {
   pt: {
-    nav: ['Início', 'Sobre', 'Projetos', 'Test Lab', 'Stack', 'Linha do Tempo', 'Contato'],
+    nav: ['Início', 'Sobre', 'Projetos', 'Stack', 'Linha do Tempo', 'Contato', 'Test Lab'],
     resume: 'Currículo',
     menu: 'Menu',
     title: 'Qualidade que entrega',
@@ -25,7 +25,7 @@ export const home = {
     drivers: '1.000+',
   },
   en: {
-    nav: ['Home', 'About', 'Projects', 'Test Lab', 'Stack', 'Timeline', 'Contact'],
+    nav: ['Home', 'About', 'Projects', 'Stack', 'Timeline', 'Contact', 'Test Lab'],
     resume: 'Resume',
     menu: 'Menu',
     title: 'Quality that delivers',
@@ -49,7 +49,7 @@ export const home = {
   },
 } as const satisfies Record<Locale, object>;
 
-export const sectionIds = ['home', 'about', 'project-details', 'lab', 'stack', 'experience', 'contact'] as const;
+export const sectionIds = ['home', 'about', 'project-details', 'stack', 'experience', 'contact'] as const;
 export const github = 'https://github.com/m4rxhs-cyber';
 export const linkedin = 'https://linkedin.com/in/neemias-sales';
 export const resume = '/curriculo-neemias-sales.pdf';
