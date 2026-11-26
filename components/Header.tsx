@@ -2,14 +2,49 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { ArrowUpRight, FlaskConical, Github, Linkedin } from 'lucide-react';
 import type { Locale } from '@/lib/content';
 import { github, home, linkedin, resume, sectionIds } from '@/lib/home';
 
+type NetworkInformation = { saveData?: boolean; effectiveType?: string };
+
 export function Header({ locale, labPage = false }: { locale: Locale; labPage?: boolean }) {
   const t = home[locale];
+  const router = useRouter();
+  const labHref = `/${locale}/test-lab`;
   const [active, setActive] = useState<string>('home');
   const menu = useRef<HTMLDetailsElement>(null);
+
+  useEffect(() => {
+    if (labPage || process.env.NODE_ENV !== 'production') return;
+
+    let cancelPrefetch: (() => void) | undefined;
+
+    function prefetch() {
+      const { connection } = navigator as Navigator & { connection?: NetworkInformation };
+      if (connection?.saveData || connection?.effectiveType?.endsWith('2g')) return;
+      router.prefetch(labHref);
+    }
+
+    function schedulePrefetch() {
+      if (typeof window.requestIdleCallback === 'function') {
+        const id = window.requestIdleCallback(prefetch);
+        cancelPrefetch = () => window.cancelIdleCallback(id);
+      } else {
+        const id = window.setTimeout(prefetch, 1000);
+        cancelPrefetch = () => window.clearTimeout(id);
+      }
+    }
+
+    if (document.readyState === 'complete') schedulePrefetch();
+    else window.addEventListener('load', schedulePrefetch, { once: true });
+
+    return () => {
+      window.removeEventListener('load', schedulePrefetch);
+      cancelPrefetch?.();
+    };
+  }, [labHref, labPage, router]);
 
   useEffect(() => {
     if (labPage) return;
@@ -57,7 +92,7 @@ export function Header({ locale, labPage = false }: { locale: Locale; labPage?: 
     ) : (
       <a key={id} href={'#' + id} aria-current={id === active ? 'location' : undefined} onClick={closeMenu}>{t.nav[index]}</a>
     ))}
-    <Link href={`/${locale}/test-lab`} aria-current={labPage ? 'page' : undefined} onClick={closeMenu}>
+    <Link href={labHref} prefetch={false} aria-current={labPage ? 'page' : undefined} onClick={closeMenu}>
       <FlaskConical size={14} aria-hidden="true" />{t.nav[sectionIds.length]}
     </Link>
   </>;

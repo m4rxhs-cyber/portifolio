@@ -2,6 +2,10 @@ import '../globals.css';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
+export function generateStaticParams() {
+  return [{ locale: 'pt' }, { locale: 'en' }];
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   return {

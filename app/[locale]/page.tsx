@@ -16,10 +16,6 @@ import { QAWorkflow } from '@/components/QAWorkflow';
 import { TestExecutionDashboard } from '@/components/TestExecutionDashboard';
 import { featuredProjects, github, home } from '@/lib/home';
 
-export function generateStaticParams() {
-  return [{ locale: 'pt' }, { locale: 'en' }];
-}
-
 export default async function Portfolio({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   if (locale !== 'pt' && locale !== 'en') notFound();
@@ -55,7 +51,7 @@ export default async function Portfolio({ params }: { params: Promise<{ locale: 
               <p className="hero-intro">{t.intro}</p>
               <div className="hero-actions">
                 <a className="button button-primary" href="#projects"><Play size={15} />{t.projects}</a>
-                <Link className="button button-outline" href={`/${locale}/test-lab`}><FlaskConical size={16} />{t.lab}</Link>
+                <Link className="button button-outline" href={`/${locale}/test-lab`} prefetch={false}><FlaskConical size={16} />{t.lab}</Link>
               </div>
             </div>
           </div>

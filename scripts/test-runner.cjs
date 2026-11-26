@@ -22,6 +22,7 @@ const { mkdtemp, readdir, rm, writeFile } = require('node:fs/promises');
 const { tmpdir } = require('node:os');
 const { join } = require('node:path');
 const { setTimeout: delay } = require('node:timers/promises');
+require('./performance-tests.cjs');
 
 test('shares importable scenario steps and builds safe path and query previews', async () => {
   assert.deepEqual(scenarioRequests.map(steps => steps.length), [1, 1, 3, 1, 1, 1, 1, 6]);

@@ -62,12 +62,6 @@
 .details ul { list-style: disc; }
 .details ol { list-style: decimal; }
 .panel .badges + .split { margin-top: 10px; }
-.metrics { display: flex; flex-wrap: wrap; gap: 10px; }
-.metrics div { flex: 1 1 110px; padding: 8px; border: 1px solid var(--lab-border); border-radius: 6px; }
-.metrics dd { font-size: var(--type-subheading); font-weight: 750; }
-.chart div { display: grid; grid-template-columns: 30px minmax(0, 1fr) 58px; align-items: center; gap: 8px; margin-top: 5px; font-size: var(--type-secondary); }
-.chart dd:first-of-type { background: #242b31; border-radius: 4px; }
-.chart dd span { display: block; height: 6px; border-radius: 4px; background: #ff626b; }
 .record { grid-column: 1 / -1; }
 .fields { margin-top: 10px; display: grid; gap: 9px; }
 .fields label { display: grid; gap: 4px; }

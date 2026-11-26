@@ -22,7 +22,7 @@ describe('Test Lab preview', () => {
     cy.contains('button', 'Bug Investigation').click();
     cy.contains('#lab-workspace h5', 'Test Store').should('be.visible');
     cy.contains('button', 'Performance').click();
-    cy.get('#lab-workspace').should('contain.text', 'Percentis de latência');
+    cy.get('[data-performance-workspace]').should('contain.text', 'Distribuição de latência');
     cy.contains('button', 'Autenticação').click();
     cy.contains('button', 'Login com usuário bloqueado').should('have.attr', 'aria-pressed', 'true');
     cy.location('pathname').should('eq', '/pt/test-lab');
@@ -33,7 +33,7 @@ describe('Test Lab preview', () => {
     cy.visit('/pt/test-lab');
     cy.get('#lab-module-select').should('have.value', 'auth').select('manual');
     cy.get('input[placeholder="Digite seu nome"]').type('QA Demo');
-    cy.contains('button', 'Enviar cadastro').should('be.disabled');
+    cy.contains('#lab-workspace button:visible', 'Enviar cadastro').should('be.disabled');
     cy.contains('label', 'Não executado').find('input').should('be.checked');
     cy.get('#lab-module-select').select('performance');
     cy.get('#lab-module-select').select('manual');
@@ -41,7 +41,7 @@ describe('Test Lab preview', () => {
     cy.get('.language').click();
     cy.location('pathname').should('eq', '/en/test-lab');
     cy.get('#lab-module-select').select('Manual Testing');
-    cy.contains('button', 'Submit registration').should('be.disabled');
+    cy.contains('#lab-workspace button:visible', 'Submit registration').should('be.disabled');
     cy.document().its('documentElement').should(root => {
       expect(root.scrollWidth).to.equal(root.clientWidth);
     });

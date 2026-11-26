@@ -3,11 +3,6 @@ import type { Locale } from '../content';
 export const moduleIds = ['auth', 'api', 'bug', 'performance', 'manual'] as const;
 export type ModuleId = typeof moduleIds[number];
 
-export const performanceFixtures = [
-  { requests: 600, errors: .003, median: 118, p95: 210, p99: 314 },
-  { requests: 1200, errors: .011, median: 142, p95: 380, p99: 504 },
-] as const;
-
 export const authSnippets = [
   "cy.get('[name=email]').type('demo@example.test');\ncy.get('[name=password]').type('demo-password');\ncy.get('form').submit();\ncy.location('pathname').should('eq', '/dashboard');",
   "cy.get('[name=email]').type('locked@example.test');\ncy.get('[name=password]').type('demo-password');\ncy.get('form').submit();\ncy.get('[role=alert]').should('contain.text', 'ACCOUNT_LOCKED');",
@@ -41,10 +36,6 @@ export const previewCopy = {
         ['A lista volta a mostrar todos os itens.', 'A lista permanece filtrada após limpar a seleção.', ['Selecione uma categoria de demonstração.', 'Use a ação Limpar filtros.', 'Confira os itens que aparecem na lista.'], 'Baixa', 'Normal'],
       ],
       evidence: 'Evidências', evidenceText: 'Espaço para capturas e contexto em uma fase futura.', report: 'Modelo de relatório', reportFields: 'Resumo · Ambiente · Passos · Resultado esperado · Resultado observado · Evidências',
-    },
-    performance: {
-      names: ['Carga de referência · 10 usuários virtuais', 'Pico de tráfego · 25 usuários virtuais'],
-      metrics: ['Requisições', 'Taxa de erro'], latency: 'Percentis de latência', note: 'Valores fictícios para ilustrar o painel. Nenhum teste de carga foi executado.',
     },
     manual: {
       scenario: 'Cenário de teste', caseId: 'TC-MAN-001', objective: 'Validar campos obrigatórios do formulário de cadastro.',
@@ -81,10 +72,6 @@ export const previewCopy = {
         ['The list shows all items again.', 'The list stays filtered after clearing the selection.', ['Select a demo category.', 'Use the Clear filters action.', 'Check which items appear in the list.'], 'Low', 'Normal'],
       ],
       evidence: 'Evidence', evidenceText: 'Reserved for screenshots and context in a future phase.', report: 'Defect report template', reportFields: 'Summary · Environment · Steps · Expected result · Observed result · Evidence',
-    },
-    performance: {
-      names: ['Baseline load · 10 virtual users', 'Traffic spike · 25 virtual users'],
-      metrics: ['Requests', 'Error rate'], latency: 'Latency percentiles', note: 'Sample values for illustration. No load test was run.',
     },
     manual: {
       scenario: 'Test scenario', caseId: 'TC-MAN-001', objective: 'Validate required fields in the sign-up form.',
